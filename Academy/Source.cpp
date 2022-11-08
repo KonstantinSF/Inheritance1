@@ -1,4 +1,4 @@
-#include<iostream>
+﻿#include<iostream>
 #include<string>
 using namespace std; 
 
@@ -34,7 +34,7 @@ public:
 		cout << "HDestrucror:\t" << this << endl;
 	}
 	//  methods
-	void print()const
+	virtual void print()const
 	{
 		cout << last_name << " " << first_name << " " << age<< " years old\n"; 
 	}
@@ -150,141 +150,70 @@ public:
 	}
 };
 
-class Undergrad:public Student 
+class Undergrad :public Student
 {
-	bool specialist;
-	bool master_dgr; 
-	std::string name_thesis; 
-	std::string supervisor; 
-	std::string date_of_defence; 
-	bool unemployed; 
-	bool study_debt; 
-	bool military_defence; 
+	std::string topic;
 public:
-
-	////////GETS//////////
-	const bool get_specialist() const
+	const std::string& get_topic()const
 	{
-		return specialist;
+		return topic;
 	}
-	const bool get_master_dgr()const
+	void set_topic(const std::string& topic)
 	{
-		return master_dgr; 
+		this->topic = topic;
 	}
-	/*const std::string& get_name_thesis()const
+	//				Constructors:
+	Undergrad(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, const std::string& topic) :
+		Student(HUMAN_GIVE_PARAMETERS, STUDENT_GIVE_PARAMETERS)
 	{
-		return name_thesis; 
-	}
-	const std::string& get_superviser() const
-	{
-		return supervisor; 
-	}
-	const std::string& get_date_of_defence()const
-	{
-		return date_of_defence; 
-	}
-	const bool get_unemployed()const
-	{
-		return unemployed; 
-	}
-	const bool get_study_debt()const
-	{
-		return study_debt; 
-	}
-	const bool get_military_defence() const
-	{
-		return military_defence; 
-	}*/
-	////////SETS//////////
-	void set_specialist(bool specialist)
-	{
-		this->specialist=specialist;
-	}
-	void set_master_dgr (bool master_dgr)
-	{
-		this->master_dgr = master_dgr;
-	}
-	/*void set_name_thesis (const std::string& name_thesis)
-	{
-		this->name_thesis = name_thesis;
-	}
-	void set_supervisor(const std::string& supervisor)
-	{
-		this->supervisor = supervisor;
-	}
-	void set_date_of_defence(const std::string& date_of_defence)
-	{
-		this->date_of_defence = date_of_defence; 
-	}
-	void set_unemployed(const bool unemployed)
-	{
-		this->unemployed = unemployed; 
-	}
-	void set_study_debt(const bool study_debt)
-	{
-		this->study_debt = study_debt; 
-	}
-	void set_military_defence(const bool military_defence)
-	{
-		this->military_defence = military_defence; 
-	}*/
-	
-	/// ///////////constructor////////////////
-	Undergrad
-	(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, 
-	const bool specialist,
-	const bool master_dgr
-	/*std::string& name_thesis,
-	std::string& supervisor,
-	std::string& date_of_defence,
-	const bool unemployed,
-	const bool study_debt,
-	const bool military_defence*/
-	):Student(HUMAN_GIVE_PARAMETERS, STUDENT_GIVE_PARAMETERS)
-	{
-		set_specialist(specialist);
-		set_master_dgr(master_dgr);
-		/*set_name_thesis(name_thesis); 
-		set_supervisor(supervisor);
-		set_date_of_defence(date_of_defence); 
-		set_unemployed(unemployed); 
-		set_study_debt(study_debt);
-		set_military_defence(military_defence); */
-		cout << "UndergradConstructor:\t" << this << endl;
+		set_topic(topic);
+		cout << "GConstructor:\t" << this << endl;
 	}
 	~Undergrad()
 	{
-		cout << "UndergradDestrucror:\t" << this << endl;
+		cout << "GDestructor:\t" << this << endl;
 	}
-	///////METHODS////////
+	//				Methods:
 	void print()const
 	{
 		Student::print();
-		if (specialist)cout << "Specialist"; else cout << "No/specialist"; 
-		cout << " "; 
-		if (master_dgr)cout << "Master dgr"; else cout<< "No/master"<<
-			/*" "<<name_thesis<< " "<< supervisor<<" "<< date_of_defence<<" "<<
-			unemployed<< " "<< study_debt<<" "<< military_defence << */
-			endl;
+		cout << "Diploma theme: " << topic << endl;
 	}
 };
-
+//#define INHERITANCE
 void main()
 {
 	setlocale(LC_ALL, "");
 
+#ifdef INHERITANCE
 	Human human("Montana", "Antonio", 25);
 	//human.print(); 
-	cout << delimiter << endl; 
+	cout << delimiter << endl;
 
-	Student stud("Pinkman", "Jessie", 25, "Chemistry", "WW_220", 90, 95); 
+	Student stud("Pinkman", "Jessie", 25, "Chemistry", "WW_220", 90, 95);
 	//stud.print(); 
-	cout << delimiter << endl; 
+	cout << delimiter << endl;
 
-	Undergrad U2("Vitek", "Jessie", 25, "Chemistry", "WW_220", 90, 95, true, false);
-	U2.print(); 
-	cout << delimiter << endl; 
+	Undergrad hank("Schreder", "Hank", 40, "Criminalistic", "WW_220", 95, 80, "How to catch Heisenberg");
+	hank.print();
+	cout << delimiter << endl;
 
-	Teacher professor("White", "Walter", 50, "Chemistry", 20); 
-	//professor.print(); 
+	Teacher professor("White", "Walter", 50, "Chemistry", 20);
+	//professor.print();   
+#endif // INHERITANCE
+	Human* group[] =
+	{
+		new Student("Pinkman", "Jessie", 25, "Chemistry", "WW_220", 90, 95),
+		new Teacher("White", "Walter", 50, "Chemistry", 20),
+		new Undergrad("Schreder", "Hank", 40, "Criminalistic", "WW_220", 95, 80, "How to catch Heisenberg"),
+		new Student("Vercetti", "Tomas", 30, "Criminalistic", "Vice", 98, 99),
+		new Teacher("Diaz", "Ricardo", 50, "Weapons distribution", 15),
+		new Teacher("Einstein", "Albert", 143, "Astronomy", 120)
+	};
+
+	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
+	{
+		group[i]->print();
+		cout << delimiter << endl;
+	}
 }

@@ -27,9 +27,9 @@ public:
 	Human(HUMAN_TAKE_PARAMETERS) :
 		last_name(last_name), first_name(first_name), age(age)
 	{
-		cout << "HConstrucror:\t" << this << endl; 
+		cout << "HConstrucror:\t" << this << endl; g
 	}
-	~Human()
+	virtual~Human()
 	{
 		cout << "HDestrucror:\t" << this << endl;
 	}
@@ -215,5 +215,9 @@ void main()
 	{
 		group[i]->print();
 		cout << delimiter << endl;
+	}
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		delete group[i]; 
 	}
 }

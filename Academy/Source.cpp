@@ -150,18 +150,141 @@ public:
 	}
 };
 
+class Undergrad:public Student 
+{
+	bool specialist;
+	bool master_dgr; 
+	std::string name_thesis; 
+	std::string supervisor; 
+	std::string date_of_defence; 
+	bool unemployed; 
+	bool study_debt; 
+	bool military_defence; 
+public:
+
+	////////GETS//////////
+	const bool get_specialist() const
+	{
+		return specialist;
+	}
+	const bool get_master_dgr()const
+	{
+		return master_dgr; 
+	}
+	/*const std::string& get_name_thesis()const
+	{
+		return name_thesis; 
+	}
+	const std::string& get_superviser() const
+	{
+		return supervisor; 
+	}
+	const std::string& get_date_of_defence()const
+	{
+		return date_of_defence; 
+	}
+	const bool get_unemployed()const
+	{
+		return unemployed; 
+	}
+	const bool get_study_debt()const
+	{
+		return study_debt; 
+	}
+	const bool get_military_defence() const
+	{
+		return military_defence; 
+	}*/
+	////////SETS//////////
+	void set_specialist(bool specialist)
+	{
+		this->specialist=specialist;
+	}
+	void set_master_dgr (bool master_dgr)
+	{
+		this->master_dgr = master_dgr;
+	}
+	/*void set_name_thesis (const std::string& name_thesis)
+	{
+		this->name_thesis = name_thesis;
+	}
+	void set_supervisor(const std::string& supervisor)
+	{
+		this->supervisor = supervisor;
+	}
+	void set_date_of_defence(const std::string& date_of_defence)
+	{
+		this->date_of_defence = date_of_defence; 
+	}
+	void set_unemployed(const bool unemployed)
+	{
+		this->unemployed = unemployed; 
+	}
+	void set_study_debt(const bool study_debt)
+	{
+		this->study_debt = study_debt; 
+	}
+	void set_military_defence(const bool military_defence)
+	{
+		this->military_defence = military_defence; 
+	}*/
+	
+	/// ///////////constructor////////////////
+	Undergrad
+	(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, 
+	const bool specialist,
+	const bool master_dgr
+	/*std::string& name_thesis,
+	std::string& supervisor,
+	std::string& date_of_defence,
+	const bool unemployed,
+	const bool study_debt,
+	const bool military_defence*/
+	):Student(HUMAN_GIVE_PARAMETERS, STUDENT_GIVE_PARAMETERS)
+	{
+		set_specialist(specialist);
+		set_master_dgr(master_dgr);
+		/*set_name_thesis(name_thesis); 
+		set_supervisor(supervisor);
+		set_date_of_defence(date_of_defence); 
+		set_unemployed(unemployed); 
+		set_study_debt(study_debt);
+		set_military_defence(military_defence); */
+		cout << "UndergradConstructor:\t" << this << endl;
+	}
+	~Undergrad()
+	{
+		cout << "UndergradDestrucror:\t" << this << endl;
+	}
+	///////METHODS////////
+	void print()const
+	{
+		Student::print();
+		if (specialist)cout << "Specialist"; else cout << "No/specialist"; 
+		cout << " "; 
+		if (master_dgr)cout << "Master dgr"; else cout<< "No/master"<<
+			/*" "<<name_thesis<< " "<< supervisor<<" "<< date_of_defence<<" "<<
+			unemployed<< " "<< study_debt<<" "<< military_defence << */
+			endl;
+	}
+};
+
 void main()
 {
 	setlocale(LC_ALL, "");
 
 	Human human("Montana", "Antonio", 25);
-	human.print(); 
+	//human.print(); 
 	cout << delimiter << endl; 
 
 	Student stud("Pinkman", "Jessie", 25, "Chemistry", "WW_220", 90, 95); 
-	stud.print(); 
+	//stud.print(); 
+	cout << delimiter << endl; 
+
+	Undergrad U2("Vitek", "Jessie", 25, "Chemistry", "WW_220", 90, 95, true, false);
+	U2.print(); 
 	cout << delimiter << endl; 
 
 	Teacher professor("White", "Walter", 50, "Chemistry", 20); 
-	professor.print(); 
+	//professor.print(); 
 }

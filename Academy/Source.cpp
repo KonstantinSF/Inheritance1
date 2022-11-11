@@ -19,7 +19,7 @@ public:
 	{
 		return first_name; 
 	}
-	unsigned int get_age()const
+	const unsigned int get_age()const
 	{
 		return age; 
 	}
@@ -131,7 +131,8 @@ public:
 
 	Teacher(
 		HUMAN_TAKE_PARAMETERS,
-		const std::string& specialty, unsigned int experience
+		const std::string& specialty, 
+		unsigned int experience
 	) :Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_specialty(specialty);
@@ -171,7 +172,7 @@ public:
 	{
 		return master_dgr; 
 	}
-	/*const std::string& get_name_thesis()const
+	const std::string& get_name_thesis()const
 	{
 		return name_thesis; 
 	}
@@ -194,7 +195,7 @@ public:
 	const bool get_military_defence() const
 	{
 		return military_defence; 
-	}*/
+	}
 	////////SETS//////////
 	void set_specialist(bool specialist)
 	{
@@ -204,7 +205,7 @@ public:
 	{
 		this->master_dgr = master_dgr;
 	}
-	/*void set_name_thesis (const std::string& name_thesis)
+	void set_name_thesis (const std::string& name_thesis)
 	{
 		this->name_thesis = name_thesis;
 	}
@@ -227,45 +228,44 @@ public:
 	void set_military_defence(const bool military_defence)
 	{
 		this->military_defence = military_defence; 
-	}*/
-	
-	/// ///////////constructor////////////////
+	}
+	///////////////constructor////////////////
 	Undergrad
 	(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, 
 	const bool specialist,
-	const bool master_dgr
-	/*std::string& name_thesis,
-	std::string& supervisor,
-	std::string& date_of_defence,
+	const bool master_dgr,
+	const std::string& name_thesis,
+	const std::string& supervisor,
+	const std::string& date_of_defence,
 	const bool unemployed,
 	const bool study_debt,
-	const bool military_defence*/
+	const bool military_defence
 	):Student(HUMAN_GIVE_PARAMETERS, STUDENT_GIVE_PARAMETERS)
 	{
 		set_specialist(specialist);
 		set_master_dgr(master_dgr);
-		/*set_name_thesis(name_thesis); 
+		set_name_thesis(name_thesis); 
 		set_supervisor(supervisor);
 		set_date_of_defence(date_of_defence); 
 		set_unemployed(unemployed); 
 		set_study_debt(study_debt);
-		set_military_defence(military_defence); */
+		set_military_defence(military_defence); 
 		cout << "UndergradConstructor:\t" << this << endl;
 	}
 	~Undergrad()
 	{
-		cout << "UndergradDestrucror:\t" << this << endl;
+		cout << "UDestrucror:\t" << this << endl;
 	}
 	///////METHODS////////
 	void print()const
 	{
 		Student::print();
-		if (specialist)cout << "Specialist"; else cout << "No/specialist"; 
-		cout << " "; 
-		if (master_dgr)cout << "Master dgr"; else cout<< "No/master"<<
-			/*" "<<name_thesis<< " "<< supervisor<<" "<< date_of_defence<<" "<<
-			unemployed<< " "<< study_debt<<" "<< military_defence << */
-			endl;
+		if (specialist)cout << "Specialist/"; else cout << " ";  
+		if (master_dgr)cout << "Master dgr/"; else cout << " ";
+		cout<<"Thesis:"<< name_thesis << " Supervisor:" << supervisor << " Date of defence:" << date_of_defence << " " << endl;
+		cout << "Job: "; if (unemployed)cout << "unemployed/ "; else cout << "have a job exp. " << " ";
+		cout << "Study debt: "; if (study_debt)cout << "Alert! Srudy debt!NONE exam!"; else cout << "Exam admited"<<" ";
+		cout << "Military defence: "; if (military_defence)cout << "Presence"; else cout<< "The army is waiting..."<< endl;
 	}
 };
 
@@ -281,8 +281,8 @@ void main()
 	//stud.print(); 
 	cout << delimiter << endl; 
 
-	Undergrad U2("Vitek", "Jessie", 25, "Chemistry", "WW_220", 90, 95, true, false);
-	U2.print(); 
+	Undergrad Semenoff("Semenof", "Sergey", 25, "Police rules in Russian Hunting", "PR_22", 75, 70, true, false, "... in advance", "Mihalich", "30/06", true, false, true);
+	Semenoff.print(); 
 	cout << delimiter << endl; 
 
 	Teacher professor("White", "Walter", 50, "Chemistry", 20); 

@@ -27,18 +27,22 @@ public:
 	Human(HUMAN_TAKE_PARAMETERS) :
 		last_name(last_name), first_name(first_name), age(age)
 	{
-		cout << "HConstrucror:\t" << this << endl; g
+		cout << "HConstrucror:\t" << this << endl; 
 	}
 	virtual~Human()
 	{
 		cout << "HDestrucror:\t" << this << endl;
 	}
 	//  methods
-	virtual void print()const
+	virtual std::ostream& print(std:: ostream& os)const
 	{
-		cout << last_name << " " << first_name << " " << age<< " years old\n"; 
+		return os << last_name << " " << first_name << " " << age<< " years old\n"; 
 	}
 }; 
+std::ostream& operator<< (std::ostream& os, const Human& obj)
+{
+	return obj.print(os);
+}
 
 #define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attandance
 #define STUDENT_GIVE_PARAMETERS speciality, group, rating, attandance
@@ -99,10 +103,10 @@ public:
 	}
 
 	//		Methods:
-	void print()const
+	std::ostream& print(std::ostream&os)const override
 	{
-		Human::print();
-		cout << speciality << " " << group << " " << rating << " " << attandance << endl; 
+		
+		return Human::print(os) << speciality << " " << group << " " << rating << " " << attandance << endl;
 	}
 };
 
@@ -143,10 +147,9 @@ public:
 		cout << "TDestrucror:\t" << this << endl; 
 	}
 	//		methods
-	void print()const
+std::ostream& print(std::ostream& os)const override
 	{
-		Human::print();
-		cout << specialty << " " << experience << endl; 
+		return Human::print(os) << specialty << " " << experience << endl;
 	}
 };
 
@@ -174,10 +177,10 @@ public:
 		cout << "GDestructor:\t" << this << endl;
 	}
 	//				Methods:
-	void print()const
+	std::ostream&  print(std::ostream& os)const override
 	{
-		Student::print();
-		cout << "Diploma theme: " << topic << endl;
+		
+		return Student::print(os) << "Diploma theme: " << topic << endl;
 	}
 };
 //#define INHERITANCE
@@ -213,11 +216,12 @@ void main()
 
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
-		group[i]->print();
+		cout<< *group[i];
 		cout << delimiter << endl;
 	}
-	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	/*for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		delete group[i]; 
-	}
+	}*/
+	
 }

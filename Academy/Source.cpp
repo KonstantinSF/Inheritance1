@@ -1,10 +1,13 @@
 ﻿#include<iostream>
 #include<string>
+#include<fstream>
 using namespace std; 
 
 #define delimiter "\n------------------------------------------------\n"
 #define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, unsigned int age
 #define HUMAN_GIVE_PARAMETERS last_name, first_name, age
+//#define PRINT_TO_CONSOLE
+
 class Human
 {
 	std::string last_name; 
@@ -184,6 +187,8 @@ public:
 	}
 };
 //#define INHERITANCE
+//#define PRINT_TO_FILE
+#define READ_FROM_FILE
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -213,15 +218,43 @@ void main()
 		new Teacher("Diaz", "Ricardo", 50, "Weapons distribution", 15),
 		new Teacher("Einstein", "Albert", 143, "Astronomy", 120)
 	};
-
+#ifdef PRINT_TO_CONSOLE
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
-		cout<< *group[i];
+		cout << *group[i];
 		cout << delimiter << endl;
 	}
-	/*for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+#endif // PRINT_TO_CONSOLE
+
+#ifdef PRINT_TO_FILE
+	std::fstream fout; //cteate a stream
+	fout.open("Academy_group.txt", std::ios::app);//open stream
+	for (int i = 0; i < sizeof(group) / sizeof(Student*); i++) fout << *group[i] << endl;//write in a stream
+	fout.close(); //close the stream
+	system("notepad Academy_group.txt");
+#endif // PRINT_TO_FILE
+
+
+#ifdef READ_FROM_FILE
+	ifstream fin("Academy_group.txt");
+	if (fin.is_open())
+	{
+		const int SIZE = 1024;
+		char buffer[SIZE] = {};
+		while (!fin.eof())
+		{
+			fin.getline(buffer, SIZE);
+			cout << fin.tellg() << "\t";
+			cout << buffer << endl;
+		}
+		fin.close();
+	}
+	else cerr << "File is not found:(" << endl;
+#endif // READ_FROM_FILE
+
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		delete group[i]; 
-	}*/
+	}
 	
 }

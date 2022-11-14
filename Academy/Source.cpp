@@ -236,7 +236,7 @@ void main()
 
 
 #ifdef READ_FROM_FILE
-	ifstream fin("Academy_group.txt");
+	fstream fin("Academy_group.txt");
 	if (fin.is_open())
 	{
 		const int SIZE = 1024;

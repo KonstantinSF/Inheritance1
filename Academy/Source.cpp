@@ -291,7 +291,7 @@ public:
 
 Human* HumanFactory(const std::string& type)
 {//этот метод создает объекты в динамич памяти, нет конструктора по умолч., поэтому руками. npos возвращает, если find() не нашел
-	if (type.find("Student") != std::string::npos)return new Student("", "", 0, "", "", 0, 0); 
+	if (type.find("Student") != std::string::npos)return new Student("", "", 0, "", "", 0, 0); //в передаваемой строке будет "class Student" поэтому надо найти файндом Student
 	if (type.find("Undergrad") != std::string::npos)return new Undergrad("", "", 0, "", "", 0, 0,"");
 	if (type.find("Teacher") != std::string::npos)return new Teacher("", "", 0, "", 0); 
 }
@@ -343,9 +343,9 @@ Human** load(const std::string& filename, int& n)
 			std::string type; //создали строку тип, в нее задаем тип объекта(все, что до двоеточия)
 			for (int i = 0; i < n; i++)
 			{
-				std::getline(fin, type, ':'); //читаем до двоеточия, это делимитер
+				std::getline(fin, type, ':'); //читаем до двоеточия, и записываем в строку type. : - это делимитер
 				//cout << buffer << endl; 
-				group[i] = HumanFactory(type);//возвращает нам пустой объект нужного класса
+				group[i] = HumanFactory(type);//возвращает нам объект нужного класса
 				fin >> *group[i]; //передаем в поток собранную из текста группу
 			}
 		}

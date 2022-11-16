@@ -340,13 +340,13 @@ Human** load(const std::string& filename, int& n)
 	
 		if (fin.is_open())//4 загружаем объекты из файла
 		{
-			std::string type; 
+			std::string type; //создали строку тип, в нее задаем тип объекта(все, что до двоеточия)
 			for (int i = 0; i < n; i++)
 			{
 				std::getline(fin, type, ':'); //читаем до двоеточия, это делимитер
 				//cout << buffer << endl; 
 				group[i] = HumanFactory(type);//возвращает нам пустой объект нужного класса
-				fin >> *group[i]; //читаем после двоеточия
+				fin >> *group[i]; //передаем в поток собранную из текста группу
 			}
 		}
 	
@@ -421,7 +421,7 @@ void main()
 	/*print(group, sizeof(group) / sizeof(group[0])); 
 	save(group, sizeof(group) / sizeof(group[0]), "group.txt");*/
 	int n = 0; 
-	Human** group = load("group.txt", n); 
+	Human** group = load("group.txt", n); //загружаем массив из файла, формируем его оттуда
 	print(group, n); 
 
 	for (int i = 0; i < n; i++)

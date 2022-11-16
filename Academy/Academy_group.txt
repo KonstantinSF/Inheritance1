@@ -1,60 +1,7 @@
-Pinkman Jessie 25 years old
-Chemistry WW_220 90 95
-
-Pinkman Jessie 25 years old
-Chemistry WW_220 90 95
-
-White Walter 50 years old
-Chemistry 20
-
-Schreder Hank 40 years old
-Criminalistic WW_220 95 80
-Diploma theme: How to catch Heisenberg
-
-Vercetti Tomas 30 years old
-Criminalistic Vice 98 99
-
-Diaz Ricardo 50 years old
-Weapons distribution 15
-
-Einstein Albert 143 years old
-Astronomy 120
-
-Pinkman Jessie 25 years old
-Chemistry WW_220 90 95
-
-White Walter 50 years old
-Chemistry 20
-
-Schreder Hank 40 years old
-Criminalistic WW_220 95 80
-Diploma theme: How to catch Heisenberg
-
-Vercetti Tomas 30 years old
-Criminalistic Vice 98 99
-
-Diaz Ricardo 50 years old
-Weapons distribution 15
-
-Einstein Albert 143 years old
-Astronomy 120
-
-Pinkman Jessie 25 years old
-Chemistry WW_220 90 95
-
-White Walter 50 years old
-Chemistry 20
-
-Schreder Hank 40 years old
-Criminalistic WW_220 95 80
-Diploma theme: How to catch Heisenberg
-
-Vercetti Tomas 30 years old
-Criminalistic Vice 98 99
-
-Diaz Ricardo 50 years old
-Weapons distribution 15
-
-Einstein Albert 143 years old
-Astronomy 120
-
+Pinkman Jessie 25 years old ,Chemistry WW_220 90 95
+White Walter 50 years old , Chemistry 20
+Schreder Hank 40 years old ,Criminalistic WW_220 95 80 , Diploma theme: How to catch Heisenberg
+Vercetti Tomas 30 years old ,Criminalistic Vice 98 99
+Diaz Ricardo 50 years old , Weapons distribution 15
+Einstein Albert 143 years old , Astronomy 120
+ribution 15

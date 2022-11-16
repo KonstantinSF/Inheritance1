@@ -10,6 +10,8 @@ using namespace std;
 
 class Human
 {
+	static const int FULL_NAME_LENGTH=20; 
+	static const int AGE_LENGTH=5; 
 	std::string last_name; 
 	std::string first_name; 
 	unsigned int age; 
@@ -39,19 +41,48 @@ public:
 	//  methods
 	virtual std::ostream& print(std:: ostream& os)const
 	{
-		return os << last_name << " " << first_name << " " << age<< " years old\n"; 
+		return os << last_name << " " << first_name << " " << age<< " лет."; 
+	}
+	virtual std::ofstream& print(std::ofstream& ofs)const
+	{
+		//ofs << last_name << " " << first_name << " " << age;
+		ofs.width(FULL_NAME_LENGTH); //выравнивает по прав краю, 20знакопозиций ИМЯ занимает. Ширина поля вывода
+		ofs << std::left; //выравниваем по лев борту
+		ofs << last_name+ " " +first_name; //у класса String все перегружено по умолчанию, в т.ч. и +
+		ofs.width(AGE_LENGTH);
+		ofs << std::right; 
+		ofs << age; 
+		return ofs; 
+	}
+	virtual std::ifstream& scan (std::ifstream& ifs)
+	{
+		ifs >> last_name >> first_name >> age; 
+		return ifs; 
 	}
 }; 
+
 std::ostream& operator<< (std::ostream& os, const Human& obj)
 {
 	return obj.print(os);
 }
+std::ofstream& operator << (std::ofstream& ofs, const Human& obj)
+{
+	return obj.print(ofs); 
+}
 
+std::ifstream& operator >> (std::ifstream& ifs, Human& obj)
+{
+	return obj.scan(ifs); 
+}
 #define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attandance
 #define STUDENT_GIVE_PARAMETERS speciality, group, rating, attandance
 
 class Student :public Human
 {
+	static const int SPECIALTY_LENGTH=25; 
+	static const int GROUP_LENGTH=10; 
+	static const int RATING_LENGTH=8; 
+	static const int ATTENDANCE_LENGTH=8; 
 	std::string speciality; 
 	std::string group; 
 	double rating; 
@@ -90,9 +121,7 @@ public:
 		this->attandance = attandance; 
 	}
 	//			constructors
-	Student
-	(HUMAN_TAKE_PARAMETERS,STUDENT_TAKE_PARAMETERS
-	):Human (HUMAN_GIVE_PARAMETERS)
+	Student(HUMAN_TAKE_PARAMETERS,STUDENT_TAKE_PARAMETERS):Human (HUMAN_GIVE_PARAMETERS)
 	{
 		this->speciality = speciality; 
 		this->group = group; 
@@ -106,15 +135,48 @@ public:
 	}
 
 	//		Methods:
-	std::ostream& print(std::ostream&os)const override
+	std::ostream& print(std::ostream&os)const override//как передаем в консоль
 	{
-		
-		return Human::print(os) << speciality << " " << group << " " << rating << " " << attandance << endl;
+		return Human::print(os)<< ", " << speciality << " " << group << " " << rating << " " << attandance;
+	}
+	std::ofstream& print(std::ofstream& ofs) const override//как записываем в файл
+	{
+		Human::print(ofs)<<" ";
+		ofs.width(SPECIALTY_LENGTH);//идет к первому значению в потоке 
+		ofs << std::left; 
+		ofs << speciality;
+		ofs.width(GROUP_LENGTH); 
+		ofs << group; 
+		ofs.width(RATING_LENGTH); 
+		ofs << std::right; 
+		ofs << rating; 
+		ofs.width(ATTENDANCE_LENGTH); 
+		ofs << attandance;
+		return ofs; 
+	}
+	std::ifstream& scan(std::ifstream& ifs) override//перегрузка потока ввода для студента
+	{
+		Human::scan(ifs); 
+		const int SIZE = SPECIALTY_LENGTH; 
+		char buffer[SIZE]{}; 
+		ifs.read(buffer, SIZE-1); 
+		for (int i = SIZE - 2; buffer[i] == ' '; i--)buffer[i] = 0; //убираем пробелы с конца
+		while (buffer[0] == ' ')//убираем пробелы сначала
+		{
+			for (int i = 0; buffer[i]; i++) buffer[i] = buffer[i + 1]; 
+		}
+		speciality = buffer; 
+		ifs >> group; //т.к. пробел является основным разделителем
+		ifs >> rating; 
+		ifs >> attandance; 
+		return ifs; 
 	}
 };
 
 class Teacher : public Human
 {
+	static const int SPECIALTY_LENGTH=25;
+	static const int EXPERIENCE_LENGTH=5;
 	std::string specialty; 
 	unsigned int experience; 
 public:
@@ -136,9 +198,8 @@ public:
 	}
 	//			constructor
 
-	Teacher(
-		HUMAN_TAKE_PARAMETERS,
-		const std::string& specialty, unsigned int experience
+	Teacher(HUMAN_TAKE_PARAMETERS,
+	const std::string& specialty, unsigned int experience
 	) :Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_specialty(specialty);
@@ -152,8 +213,34 @@ public:
 	//		methods
 std::ostream& print(std::ostream& os)const override
 	{
-		return Human::print(os) << specialty << " " << experience << endl;
+		return Human::print(os)<<", " << specialty << " " << experience;
 	}
+std::ofstream& print(std::ofstream& ofs) const override
+{
+	Human::print(ofs) << " ";
+	ofs.width(SPECIALTY_LENGTH);
+	ofs << std::left; 
+	ofs << specialty; 
+	ofs.width(EXPERIENCE_LENGTH); 
+	ofs << right; 
+	ofs << experience;
+	return ofs; 
+}
+std::ifstream& scan(std::ifstream& ifs)override
+{
+	Human::scan(ifs);
+	const int SIZE = SPECIALTY_LENGTH;
+	char buffer[SIZE]{};
+	ifs.read(buffer, SIZE - 1);
+	for (int i = SIZE - 2; buffer[i] == ' '; i--)buffer[i] = 0;
+	while (buffer[0] == ' ')
+	{
+		for (int i = 0; buffer[i]; i++)buffer[i] = buffer[i + 1]; 
+	}
+	specialty = buffer; 
+	ifs >> experience;
+	return ifs;
+}
 };
 
 class Undergrad :public Student
@@ -183,12 +270,89 @@ public:
 	std::ostream&  print(std::ostream& os)const override
 	{
 		
-		return Student::print(os) << "Diploma theme: " << topic << endl;
+		return Student::print(os)<< ", Diploma theme: " << topic;
+	}
+	std::ofstream& print(std::ofstream& ofs)const override
+	{
+		Student::print(ofs) << " "<< topic;
+		return ofs; 
+	}
+	std::ifstream& scan(std::ifstream& ifs) override
+	{
+		Student::scan(ifs);
+		std::getline(ifs, topic);
+		return ifs;
 	}
 };
+
 //#define INHERITANCE
 //#define PRINT_TO_FILE
-#define READ_FROM_FILE
+//#define READ_FROM_FILE
+
+Human* HumanFactory(const std::string& type)
+{//этот метод создает объекты в динамич памяти, нет конструктора по умолч., поэтому руками. npos возвращает, если find() не нашел
+	if (type.find("Student") != std::string::npos)return new Student("", "", 0, "", "", 0, 0); 
+	if (type.find("Undergrad") != std::string::npos)return new Undergrad("", "", 0, "", "", 0, 0,"");
+	if (type.find("Teacher") != std::string::npos)return new Teacher("", "", 0, "", 0); 
+}
+void print(Human* group[], const int n)//для массива указателей типа Human
+{
+	for (int i = 0; i < n; i++)
+	{
+		cout << *group[i] << endl;//write in a stream
+		cout << delimiter << endl;
+	}
+}
+void save(Human*group[], const int n,const std::string& filename)
+{
+	//std::string filename = "Group.txt";
+	std::ofstream fout(filename); //cteate a stream
+	//open stream с ф-ей дописывания в конец файла, а не перезаписывания
+	for (int i = 0; i < n; i++)
+	{
+		fout.width(15);//выделили 15 знакопозиций 
+		fout << std::left; //выровняли по лев краю
+		fout << typeid(*group[i]).name() << ":\t"; //название группы==название класса
+		fout << *group[i] << endl;//write in a file
+		//fout << delimiter << endl; 
+	}
+	fout.close(); //close the stream
+	std::string command = "notepad " + filename;//sum the strings in one
+	system(command.c_str());
+}
+Human** load(const std::string& filename, int& n)
+{
+	
+	std::ifstream fin(filename); //create a stream
+	if (fin.is_open())
+	{
+		std::string buffer; 
+		for  (n=0; !fin.eof(); n++)//считаем размер массива and after we'll be in the end of file
+		{
+			std::getline(fin, buffer); 
+		}
+		n--; //одна пустая строк в конце
+	}
+	Human** group = new Human * [n] {}; //2 Выдел память под динамич массив указателей
+	
+		fin.clear(); 
+		fin.seekg(0);//3 возвращ в нач файла, чтобы прочитать строки и загрузить и их в объекты
+	
+		if (fin.is_open())//4 загружаем объекты из файла
+		{
+			std::string type; 
+			for (int i = 0; i < n; i++)
+			{
+				std::getline(fin, type, ':'); //читаем до двоеточия, это делимитер
+				//cout << buffer << endl; 
+				group[i] = HumanFactory(type);//возвращает нам пустой объект нужного класса
+				fin >> *group[i]; //читаем после двоеточия
+			}
+		}
+	
+	return group; 
+}
+
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -209,7 +373,7 @@ void main()
 	Teacher professor("White", "Walter", 50, "Chemistry", 20);
 	//professor.print();   
 #endif // INHERITANCE
-	Human* group[] =
+	/*Human* group[] =
 	{
 		new Student("Pinkman", "Jessie", 25, "Chemistry", "WW_220", 90, 95),
 		new Teacher("White", "Walter", 50, "Chemistry", 20),
@@ -217,7 +381,7 @@ void main()
 		new Student("Vercetti", "Tomas", 30, "Criminalistic", "Vice", 98, 99),
 		new Teacher("Diaz", "Ricardo", 50, "Weapons distribution", 15),
 		new Teacher("Einstein", "Albert", 143, "Astronomy", 120)
-	};
+	};*/
 #ifdef PRINT_TO_CONSOLE
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
@@ -227,11 +391,13 @@ void main()
 #endif // PRINT_TO_CONSOLE
 
 #ifdef PRINT_TO_FILE
+	std::string filename = "Group.txt";
 	std::fstream fout; //cteate a stream
-	fout.open("Academy_group.txt", std::ios::app);//open stream
+	fout.open("Group.txt");//open stream с ф-ей дописывания в конец файла, а не перезаписывания
 	for (int i = 0; i < sizeof(group) / sizeof(Student*); i++) fout << *group[i] << endl;//write in a stream
 	fout.close(); //close the stream
-	system("notepad Academy_group.txt");
+	std::string command = "notepad" + filename; 
+	system(command.c_str());//c_str() переводит строку в язык из С++ в С
 #endif // PRINT_TO_FILE
 
 
@@ -252,7 +418,13 @@ void main()
 	else cerr << "File is not found:(" << endl;
 #endif // READ_FROM_FILE
 
-	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	/*print(group, sizeof(group) / sizeof(group[0])); 
+	save(group, sizeof(group) / sizeof(group[0]), "group.txt");*/
+	int n = 0; 
+	Human** group = load("group.txt", n); 
+	print(group, n); 
+
+	for (int i = 0; i < n; i++)
 	{
 		delete group[i]; 
 	}

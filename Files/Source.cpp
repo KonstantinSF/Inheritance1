@@ -12,12 +12,12 @@ void main()
 	setlocale(LC_ALL, ""); 
 #ifdef WRITE_TO_FILE
 	std::ofstream fout;//создаем поток
-	fout.open("File.txt", std::ios::app); //открываем поток
+	fout.open("File.txt", std::ios::app); //открываем поток, app это функция дозаписывания в файл при открытии
 
 	fout << "Hello Files!" << endl; //пишем в поток
 	fout.close(); //закрываем поток
 
-	system("notepad File.txt"); //функция систем запускает любую программу, к которой есть path в Windows 
+	system("notepad File.txt"); //функция систем запускает любую программу, к которой есть path в Windows. system м. прочитать только строку Си, поэтому если засовываем string то применяем метод .c_str() к ней
 
 #endif // WRITE_TO_FILE
 

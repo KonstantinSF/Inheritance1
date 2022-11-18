@@ -69,7 +69,6 @@ std::ofstream& operator << (std::ofstream& ofs, const Human& obj)
 {
 	return obj.print(ofs); 
 }
-
 std::ifstream& operator >> (std::ifstream& ifs, Human& obj)
 {
 	return obj.scan(ifs); 
@@ -345,7 +344,7 @@ Human** load(const std::string& filename, int& n)
 			{
 				std::getline(fin, type, ':'); //читаем до двоеточия, и записываем в строку type. : - это делимитер
 				//cout << buffer << endl; 
-				group[i] = HumanFactory(type);//возвращает нам объект нужного класса
+				group[i] = HumanFactory(type);//возвращает нам зануленный объект нужного класса
 				fin >> *group[i]; //передаем в поток собранную из текста группу
 			}
 		}

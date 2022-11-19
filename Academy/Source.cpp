@@ -291,7 +291,7 @@ public:
 Human* HumanFactory(const std::string& type)
 {//этот метод создает объекты в динамич памяти, нет конструктора по умолч., поэтому руками. npos возвращает, если find() не нашел
 	if (type.find("Student") != std::string::npos)return new Student("", "", 0, "", "", 0, 0); //в передаваемой строке будет "class Student" поэтому надо найти файндом Student
-	if (type.find("Undergrad") != std::string::npos)return new Undergrad("", "", 0, "", "", 0, 0,"");
+	if (type.find("Undergrad") != std::string::npos)return new Undergrad("", "", 0, "", "", 0, 0,"");//если не вернула npos, т.е. ничего не нашла
 	if (type.find("Teacher") != std::string::npos)return new Teacher("", "", 0, "", 0); 
 }
 void print(Human* group[], const int n)//для массива указателей типа Human

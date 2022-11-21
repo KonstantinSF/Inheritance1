@@ -205,6 +205,71 @@ namespace Geometry
 			Shape::info(); 
 		}
 	};
+	class Triangle :public Shape
+	{
+		double side1; double side2; double side3;
+	public:
+		double get_side1()const
+		{
+			return side1; 
+		}
+		double get_side2()const
+		{
+			return side2; 
+		}
+		double get_side3()const
+		{
+			return side3; 
+		}
+		void set_side1(double side1)
+		{
+			if (side1 < 5)side1 = 5; 
+			if (side1 > 30)side1 = 30; 
+			this->side1 = side1; 
+		}
+		void set_side2(double side2) 
+		{
+			if (side2 < 5) side2 = 5; 
+			if (side2 > 30)side2 = 30; 
+			this->side2 = side2; 
+		}
+		void set_side3(double side3)
+		{
+			if (side3 < 5) side3 = 5;
+			if (side3 > 30)side3 = 30;
+			this->side3 = side3;
+		}
+		//////constructor: ///////
+		Triangle(double side1, double side2, double side3, Color color) :Shape(color)
+		{
+			set_side1(side1);
+			set_side2(side2); 
+			set_side3(side3); 
+		}
+		~Triangle() {}; 
+		//////methods: ////////
+		double perimeter()const override
+		{
+			return side1 + side2 + side3; 
+		}
+		double area()const override
+		{
+			double half_perimeter = perimeter()/2; 
+			return sqrt(half_perimeter * (half_perimeter - side1) * (half_perimeter - side2) * (half_perimeter - side3)); 
+		}
+		void draw()const override
+		{
+
+		}
+		void info() const override
+		{
+			cout << typeid(*this).name() << endl; 
+			cout << "First side is : " << side1 << endl; 
+			cout << "Second side is : " << side2 << endl; 
+			cout << "Third side is : " << side3 << endl; 
+			Shape::info(); 
+		}
+	};
 }
 
 void main()
@@ -217,6 +282,9 @@ void main()
 	Geometry::Rectangle rect(15, 7, Geometry::Color::console_yellow);
 	rect.info(); */
 
-	Geometry::Circle circ(30, Geometry::Color::console_green); 
-	circ.info(); 
+	/*Geometry::Circle circ(30, Geometry::Color::console_green); 
+	circ.info(); */
+
+	Geometry::Triangle triang(15, 15, 15, Geometry::Color::console_blue); 
+	triang.info(); 
 }

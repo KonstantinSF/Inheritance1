@@ -11,7 +11,7 @@ namespace Geometry
 		red = 0x000000FF,
 		green = 0x0000FF00,
 		blue = 0x00FF0000, 
-		yellow = 0x0000FFFF,
+		yellow = 0x0000AAFF,
 		white=0x00FFFFFF,
 		grey = 0x00AAAAAAAA,
 
@@ -65,13 +65,13 @@ namespace Geometry
 			set_line_width(line_width);
 		}
 		virtual ~Shape() {}
-		virtual double area() const = 0; //clear virtual method
-		virtual double perimeter() const = 0;
+		virtual double get_area() const = 0; //clear virtual method
+		virtual double get_perimeter() const = 0;
 		virtual void draw()const = 0;
 		virtual void info() const
 		{
-			cout << "square fig.: " << area() << endl;
-			cout << "perimeter: " << perimeter() << endl;
+			cout << "square fig.: " << get_area() << endl;
+			cout << "perimeter: " << get_perimeter() << endl;
 			draw();
 		}
 	};
@@ -97,11 +97,11 @@ namespace Geometry
 			set_side(side);
 		}
 		~Square() {}
-		double area() const override
+		double get_area() const override
 		{
 			return side * side;
 		}
-		double perimeter()const override
+		double get_perimeter()const override
 		{
 			return side * 4;
 		}
@@ -159,11 +159,11 @@ namespace Geometry
 			set_length(length);
 		}
 		~Rectangle() {};
-		double area() const override
+		double get_area() const override
 		{
 			return width * length;
 		}
-		double perimeter() const override
+		double get_perimeter() const override
 		{
 			return (width + length) * 2;
 		}
@@ -189,7 +189,7 @@ namespace Geometry
 			SelectObject(hdc, hPen); //выбираем чем и на чем мы будем рисовать
 			SelectObject(hdc, hBrush); //выбираем чем и на чем мы будем рисовать
 			
-			::Rectangle(hdc, start_x, start_y, 500, 300); //рисуем прямоугольник
+			::Rectangle(hdc, start_x, start_y, start_x+width, start_y+length); //рисуем прямоугольник
 			DeleteObject(hPen); 
 			DeleteObject(hBrush); 
 			
@@ -226,11 +226,11 @@ namespace Geometry
 		}
 		~Circle() {};
 		///////Methods: /////////
-		double area()const override
+		double get_area()const override
 		{
 			return M_PI*radius*radius;
 		}
-		double perimeter()const override
+		double get_perimeter()const override
 		{
 			return 2*M_PI*radius; 
 		}
@@ -258,7 +258,80 @@ namespace Geometry
 		}
 	};
 
+	class Triangle :public Shape
+	{
+	public:
+		Triangle(unsigned int start_x, unsigned int start_y, unsigned int line_width, Color color)
+			:Shape(start_x, start_y, line_width, color) {}; 
+		virtual double get_height() const = 0; 
+		void info()const
+		{
+			cout << "Height: \t" << get_height() << endl; 
+			Shape::info(); 
+		}
+};
+	class EquilateralTriangle :public Triangle
+	{
+		double side; 
+	public:
+		double get_side()const
+		{
+			return side; 
+		}
+		void set_side(double side)
+		{
+			if (side < 20) side = 20; 
+			if (side > 200) side = 200; 
+			this->side = side; 
+		}
+		//////constructor:  ////////
+		EquilateralTriangle(double side, unsigned int start_x, unsigned int start_y, unsigned int line_width, Color color)
+			:Triangle(start_x, start_y, line_width, color)
+		{
+			set_side(side); 
+		}
+		~EquilateralTriangle() {}
 
+		//////Methods /////////////
+		double get_height() const override
+		{
+			return 2 * get_area() / side; 
+		}
+		double get_area()const override
+		{
+			return side * side * sqrt(3) / 4; 
+		}
+		double get_perimeter()const override
+		{
+			return side * 3; 
+		}
+		void draw() const override
+		{
+			HWND hwnd = GetConsoleWindow(); 
+			HDC hdc = GetDC(hwnd); 
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color); 
+			HBRUSH hBrush = CreateSolidBrush(color); 
+			SelectObject(hdc, hPen); 
+			SelectObject(hdc, hBrush); 
+
+			POINT vert[] =
+			{
+				{start_x, start_y + side},
+				{start_x + side, start_y + side},
+				{start_x + side / 2, start_y + side - get_height()}
+			}; 
+			::Polygon(hdc, vert, 3); 
+			DeleteObject(hBrush); 
+			DeleteObject(hPen);
+			ReleaseDC(hwnd, hdc); 
+		}
+		void info()const override
+		{
+			cout << typeid(*this).name() << endl; 
+			cout << "Side:  \t" << side << endl; 
+			Triangle::info(); 
+		}
+	};
 }
 
 void main()
@@ -271,9 +344,9 @@ void main()
 	Geometry::Rectangle rect(150, 70, 300, 100, 11, Geometry::Color::grey);
 	rect.info(); 
 
-	Geometry::Circle circ(200, 500, 200, 11, Geometry::Color::yellow);
+	Geometry::Circle circ(100, 500, 100, 11, Geometry::Color::yellow);
 	circ.info(); 
 
-	/*Geometry::Triangle triang(15, 15, 15, Geometry::Color::console_blue); 
-	triang.info(); */
+	Geometry::EquilateralTriangle e_try(170, 350, 200, 15, Geometry::Color::green); 
+	e_try.info(); 
 }

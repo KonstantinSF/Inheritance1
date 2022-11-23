@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include<iostream>
 #include<Windows.h>
 using namespace std; 
@@ -7,6 +8,13 @@ namespace Geometry
 	const double pi = 3.14;
 	enum Color//набор целочисл-х констант
 	{
+		red = 0x000000FF,
+		green = 0x0000FF00,
+		blue = 0x00FF0000, 
+		yellow = 0x0000FFFF,
+		white=0x00FFFFFF,
+		grey = 0x00AAAAAAAA,
+
 		console_default = 0x07,
 		console_blue = 0x99, //цвет фона 9 цвет текста 9
 		console_green = 0xAA,
@@ -18,8 +26,44 @@ namespace Geometry
 	{
 	protected:
 		Color color;//только при наследовании
+		unsigned int start_x; 
+		unsigned int start_y; 
+		unsigned int line_width; 
+
 	public:
-		Shape(Color color) :color(color) {}
+		unsigned int get_start_x() const
+		{
+			return start_x; 
+		}
+		unsigned int get_start_y() const
+		{
+			return start_y;
+		}
+		unsigned int get_line_width() const
+		{
+			return line_width;
+		}
+		void set_start_x(unsigned int start_x)
+		{
+			if (start_x > 800)start_x = 800;
+			this->start_x = start_x; 
+		}
+		void set_start_y(unsigned int start_y)
+		{
+			if (start_y > 500)start_y = 500;
+			this->start_y = start_y;
+		}
+		void set_line_width(unsigned int line_width)
+		{
+			if (line_width > 30)line_width = 30; 
+			this->line_width = line_width; 
+		}
+		Shape(unsigned int start_x, unsigned int start_y, unsigned int line_width, Color color) :color(color)
+		{
+			set_start_x(start_x);
+			set_start_y(start_y);
+			set_line_width(line_width);
+		}
 		virtual ~Shape() {}
 		virtual double area() const = 0; //clear virtual method
 		virtual double perimeter() const = 0;
@@ -47,7 +91,8 @@ namespace Geometry
 			this->side = side;
 		}
 		////////	Constructors://////////
-		Square(double side, Color color) :Shape(color)
+		Square(double side, unsigned int start_x, unsigned int start_y, unsigned int line_width, Color color)
+			:Shape(start_x, start_y, line_width, color)
 		{
 			set_side(side);
 		}
@@ -96,18 +141,19 @@ namespace Geometry
 		}
 		void set_width(double width)
 		{
-			if (width < 8) width = 8;
-			if (width > 30) width = 30;
+			if (width < 30) width = 30;
+			if (width > 300) width = 300;
 			this->width = width;
 		}
 		void set_length(double length)
 		{
-			if (length < 3) length = 3;
-			if (length > 20)length = 20;
+			if (length < 20) length = 20;
+			if (length > 200)length = 200;
 			this->length = length;
 		}
 		///////// Constructor//////////:
-		Rectangle(double width, double length, Color color) :Shape(color)
+		Rectangle(double width, double length, unsigned int start_x, unsigned int start_y, unsigned int line_width, Color color)
+			:Shape(start_x, start_y, line_width, color)
 		{
 			set_width(width);
 			set_length(length);
@@ -138,13 +184,14 @@ namespace Geometry
 			HWND hwnd = GetConsoleWindow(); //получаем окно консоли
 			//ѕолучаем контекст устройства дл€ окна консоли
 			HDC hdc = GetDC(hwnd);//это то на чем мы будем рисовать
-			HPEN hPen = CreatePen(PS_SOLID, 5, color); //создаем карандаш-то чем мы буддем рисовать
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color); //создаем карандаш-то чем мы буддем рисовать
 			HBRUSH hBrush = CreateSolidBrush(color); //создаем кисть, она рисует заливку замкнутой фигуры
 			SelectObject(hdc, hPen); //выбираем чем и на чем мы будем рисовать
 			SelectObject(hdc, hBrush); //выбираем чем и на чем мы будем рисовать
 			
-			::Rectangle(hdc, 100, 100, 500, 300); //рисуем пр€моугольник
+			::Rectangle(hdc, start_x, start_y, 500, 300); //рисуем пр€моугольник
 			DeleteObject(hPen); 
+			DeleteObject(hBrush); 
 			
 			ReleaseDC(hwnd, hdc);//осовбождаем контекст устройства
 		
@@ -159,41 +206,46 @@ namespace Geometry
 	};
 	class Circle :public Shape
 	{
-		double diameter; 
+		double radius; 
 	public:
-		double get_diameter()const
+		double get_radius()const
 		{
-			return diameter; 
+			return radius; 
 		}
-		void set_diameter(double diameter)
+		void set_radius(double radius)
 		{
-			if (diameter < 3) diameter=3; 
-			if (diameter > 50) diameter=50; 
-			this->diameter = diameter; 
+			if (radius < 20) radius=20; 
+			if (radius > 220) radius=220; 
+			this->radius = radius; 
 		}
 		/////////Constructor: //////////
-		Circle(double diameter, Color color):Shape(color)
+		Circle(double radius, unsigned int start_x, unsigned int start_y, unsigned int line_width, Color color)
+			:Shape(start_x, start_y, line_width, color)
 		{
-			set_diameter(diameter); 
+			set_radius(radius); 
 		}
 		~Circle() {};
 		///////Methods: /////////
 		double area()const override
 		{
-			return pi * pow(diameter, 2) / 4; 
+			return M_PI*radius*radius;
 		}
 		double perimeter()const override
 		{
-			return pi * diameter; 
+			return 2*M_PI*radius; 
 		}
 		void draw()const override
 		{
 			HWND hwnd = GetConsoleWindow(); 
 			HDC hdc = GetDC(hwnd); 
-			HPEN hPen = CreatePen(PS_SOLID, 5, color); 
+
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color); 
 			HBRUSH hBrush = CreateSolidBrush(color); 
 			SelectObject(hdc, hPen); 
-			Ellipse(hdc, 300, 300, 500, 500); 
+			SelectObject(hdc, hBrush); 
+
+			::Ellipse(hdc, start_x, start_y, start_x+radius*2, start_y+radius*2); //задаем параметры пр€моугольника в который вписан эллипс
+
 			DeleteObject(hPen); 
 			DeleteObject(hBrush); 
 			ReleaseDC(hwnd, hdc); 
@@ -201,90 +253,27 @@ namespace Geometry
 		void info()const override
 		{
 			cout << typeid(*this).name() << endl; 
-			cout <<"Diameter: "<< diameter << endl;
+			cout <<"radius: "<< radius << endl;
 			Shape::info(); 
 		}
 	};
-	class Triangle :public Shape
-	{
-		double side1; double side2; double side3;
-	public:
-		double get_side1()const
-		{
-			return side1; 
-		}
-		double get_side2()const
-		{
-			return side2; 
-		}
-		double get_side3()const
-		{
-			return side3; 
-		}
-		void set_side1(double side1)
-		{
-			if (side1 < 5)side1 = 5; 
-			if (side1 > 30)side1 = 30; 
-			this->side1 = side1; 
-		}
-		void set_side2(double side2) 
-		{
-			if (side2 < 5) side2 = 5; 
-			if (side2 > 30)side2 = 30; 
-			this->side2 = side2; 
-		}
-		void set_side3(double side3)
-		{
-			if (side3 < 5) side3 = 5;
-			if (side3 > 30)side3 = 30;
-			this->side3 = side3;
-		}
-		//////constructor: ///////
-		Triangle(double side1, double side2, double side3, Color color) :Shape(color)
-		{
-			set_side1(side1);
-			set_side2(side2); 
-			set_side3(side3); 
-		}
-		~Triangle() {}; 
-		//////methods: ////////
-		double perimeter()const override
-		{
-			return side1 + side2 + side3; 
-		}
-		double area()const override
-		{
-			double half_perimeter = perimeter()/2; 
-			return sqrt(half_perimeter * (half_perimeter - side1) * (half_perimeter - side2) * (half_perimeter - side3)); 
-		}
-		void draw()const override
-		{
 
-		}
-		void info() const override
-		{
-			cout << typeid(*this).name() << endl; 
-			cout << "First side is : " << side1 << endl; 
-			cout << "Second side is : " << side2 << endl; 
-			cout << "Third side is : " << side3 << endl; 
-			Shape::info(); 
-		}
-	};
+
 }
 
 void main()
 {
 	setlocale(LC_ALL, ""); 
 	//Shape shape; 
-	/*Geometry::Square square(8, Geometry::Color::console_red); 
+	Geometry::Square square(8,100, 100, 11, Geometry::Color::console_red); 
 	square.info(); 
 
-	Geometry::Rectangle rect(15, 7, Geometry::Color::console_yellow);
-	rect.info(); */
+	Geometry::Rectangle rect(150, 70, 300, 100, 11, Geometry::Color::grey);
+	rect.info(); 
 
-	/*Geometry::Circle circ(30, Geometry::Color::console_green); 
-	circ.info(); */
+	Geometry::Circle circ(200, 500, 200, 11, Geometry::Color::yellow);
+	circ.info(); 
 
-	Geometry::Triangle triang(15, 15, 15, Geometry::Color::console_blue); 
-	triang.info(); 
+	/*Geometry::Triangle triang(15, 15, 15, Geometry::Color::console_blue); 
+	triang.info(); */
 }

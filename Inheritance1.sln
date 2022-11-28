@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AbstractBaseClass", "Abstra
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Abstract_geometry", "Abstract_geometry\Abstract_geometry.vcxproj", "{3D6E2C68-9197-4D70-863E-5321F85BAEB7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Threads", "Threads\Threads.vcxproj", "{D5989398-DBC6-4BEA-B500-021C9E44473C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{3D6E2C68-9197-4D70-863E-5321F85BAEB7}.Release|x64.Build.0 = Release|x64
 		{3D6E2C68-9197-4D70-863E-5321F85BAEB7}.Release|x86.ActiveCfg = Release|Win32
 		{3D6E2C68-9197-4D70-863E-5321F85BAEB7}.Release|x86.Build.0 = Release|Win32
+		{D5989398-DBC6-4BEA-B500-021C9E44473C}.Debug|x64.ActiveCfg = Debug|x64
+		{D5989398-DBC6-4BEA-B500-021C9E44473C}.Debug|x64.Build.0 = Debug|x64
+		{D5989398-DBC6-4BEA-B500-021C9E44473C}.Debug|x86.ActiveCfg = Debug|Win32
+		{D5989398-DBC6-4BEA-B500-021C9E44473C}.Debug|x86.Build.0 = Debug|Win32
+		{D5989398-DBC6-4BEA-B500-021C9E44473C}.Release|x64.ActiveCfg = Release|x64
+		{D5989398-DBC6-4BEA-B500-021C9E44473C}.Release|x64.Build.0 = Release|x64
+		{D5989398-DBC6-4BEA-B500-021C9E44473C}.Release|x86.ActiveCfg = Release|Win32
+		{D5989398-DBC6-4BEA-B500-021C9E44473C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
